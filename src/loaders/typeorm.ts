@@ -3,7 +3,6 @@ import { join } from 'path'
 import { createConnection, Connection, ConnectionOptions } from "typeorm"
 const parentDir = join(__dirname, '..');
 
-console.log(parentDir)
 const connectionOpts: ConnectionOptions = {
     type: "postgres",
     host: "localhost",
