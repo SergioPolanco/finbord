@@ -36,8 +36,12 @@ export default class UserService {
 
         try {
             await userRecord.save(userRecord);
-        } catch(error) {
-            throw error
+        } catch(e) {
+            const {detail} = e
+            let err = new Error(detail)
+            
+            err.status = 400
+            throw err
         }
 
         return userRecord

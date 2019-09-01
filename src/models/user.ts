@@ -25,6 +25,7 @@ export class User extends BaseEntity {
         'varchar',
         {
             length: 100,
+            unique: true,
         }
     )
     email: string

@@ -1,13 +1,9 @@
 import { Service, Inject, Container } from 'typedi'
 import jwt from 'jsonwebtoken'
-import argon2 from 'argon2'
-import { randomBytes } from 'crypto'
-import slugify from 'slugify'
 
 import config from '../config'
 import UserService from './user'
 import { IUser, IUserInputDTO } from '../interfaces/IUser'
-import { User } from '../models/user'
 
 
 @Service()
@@ -20,14 +16,12 @@ export default class AuthService {
 
     public async signUp(userInputDTO: IUserInputDTO): Promise<{ user: IUser; token: string }> {
         const userServiceInstance = Container.get(UserService)
-        
-
         let userRecord: IUser
 
         try {
             userRecord = await userServiceInstance.create(userInputDTO)
         } catch(e) {
-            throw new Error('User cannot be created')
+            throw e
         }
 
         this.logger.silly('Generating JWT')
@@ -60,31 +54,3 @@ export default class AuthService {
         );
     }
 }
-
-// async function createUser(userInputDTO: IUserInputDTO, Model): Promise<IUser> {
-//     const salt = randomBytes(32)
-//     const hashedPassword = await argon2.hash(userInputDTO.password, { salt })
-//     const slug = slugify(
-//         `${userInputDTO.firstName} ${userInputDTO.lastName}`,
-//         {
-//             lower: true
-//         }
-//     )
-//     let user = new Model()
-
-//     user.firstName = userInputDTO.firstName
-//     user.lastName = userInputDTO.lastName
-//     user.email = userInputDTO.email
-//     user.salt = salt.toString('hex')
-//     user.password = hashedPassword
-//     user.slug = slug
-
-//     try {
-//         await user.save(user);
-//     } catch(error) {
-//         console.log(error)
-//         return
-//     }
-
-//     return user
-// }

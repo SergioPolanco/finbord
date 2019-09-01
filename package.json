@@ -33,6 +33,7 @@
     "@types/node": "^12.7.2",
     "eslint": "^6.2.2",
     "nodemon": "^1.19.1",
+    "prettier": "1.18.2",
     "typescript": "^3.6.2"
   }
 }

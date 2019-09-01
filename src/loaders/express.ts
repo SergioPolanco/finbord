@@ -1,20 +1,24 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
-
+import { errors } from 'celebrate'
 import routes from '../api'
 import config from '../config'
 
 export default ({ app } : { app: express.Application}) => {
+    const {api} = config
+
     /**
      * Health Check endpoints
      */
     app.get('/status', (_req, res) => {
-        res.status(200).end()
+        const {status} = res
+        status(200).end()
     })
 
     app.head('/status', (_req, res) => {
-        res.status(200).end()
+        const {status} = res
+        status(200).end()
     })
 
     // Show the real origin IP in the heroku or Cloudwatch logs
@@ -28,12 +32,15 @@ export default ({ app } : { app: express.Application}) => {
     app.use(bodyParser.json())
 
     // Load API routes
-    app.use(config.api.prefix, routes())
+    app.use(api.prefix, routes())
 
+    // Catch celebrate errors
+    app.use(errors())
+    
     // catch 404 and forward to error handler
     app.use((_req, _res, next) => {
         const err = new Error('Not Found')
-        err['status'] = 404
+        err.status = 404
         next(err)
     })
 
@@ -43,21 +50,13 @@ export default ({ app } : { app: express.Application}) => {
          * Handle 401 thrown by express-jwt library
          */
         if (err.name === 'UnauthorizedError') {
-        return res
-            .status(err.status)
-            .send({ message: err.message })
-            .end()
+            const {message} = err
+            return res
+                .status(err.status)
+                .send({ message })
+                .end()
         }
         return next(err)
-    })
-
-    app.use((err, _req, res, _next) => {
-        res.status(err.status || 405)
-        res.json({
-            errors: {
-                message: err.message,
-            },
-        })
     })
 
     app.use((err, _req, res, _next) => {
