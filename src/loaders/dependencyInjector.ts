@@ -2,7 +2,6 @@
 import { Container } from 'typedi'
 
 import LoggerInstance from './logger'
-import config from '../config'
 
 export default ({ dbConnection, models }: { dbConnection; models: { name: string; model: any }[] }) => {
     try {

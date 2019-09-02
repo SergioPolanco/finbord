@@ -2,32 +2,23 @@ import { Entity, Column, PrimaryGeneratedColumn, BaseEntity } from "typeorm"
 
 @Entity()
 export class User extends BaseEntity {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('uuid')
     _id: string
 
-    @Column(
-        'varchar',
-        {
-            length: 100,
-        }
-    )
+    @Column('varchar', {
+        length: 100,
+    })
     firstName: string
 
-    @Column(
-        'varchar',
-        {
-            length: 100,
-        }
-    )
+    @Column('varchar', {
+        length: 100,
+    })
     lastName: string
 
-    @Column(
-        'varchar',
-        {
-            length: 100,
-            unique: true,
-        }
-    )
+    @Column('varchar', {
+        length: 100,
+        unique: true,
+    })
     email: string
 
     @Column('varchar')

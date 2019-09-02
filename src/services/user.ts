@@ -1,4 +1,5 @@
 import { Service, Inject } from 'typedi'
+import { getRepository } from 'typeorm'
 import argon2 from 'argon2'
 import { randomBytes } from 'crypto'
 import slugify from 'slugify'
@@ -25,17 +26,17 @@ export default class UserService {
             }
         )
 
-        let userRecord = new this.UserModel()
+        let userInstance = new this.UserModel()
 
-        userRecord.firstName = userInputDTO.firstName
-        userRecord.lastName = userInputDTO.lastName
-        userRecord.email = userInputDTO.email
-        userRecord.salt = salt.toString('hex')
-        userRecord.password = hashedPassword
-        userRecord.slug = slug
+        userInstance.firstName = userInputDTO.firstName
+        userInstance.lastName = userInputDTO.lastName
+        userInstance.email = userInputDTO.email
+        userInstance.salt = salt.toString('hex')
+        userInstance.password = hashedPassword
+        userInstance.slug = slug
 
         try {
-            await userRecord.save(userRecord);
+            await userInstance.save(userInstance);
         } catch(e) {
             const {detail} = e
             let err = new Error(detail)
@@ -44,6 +45,30 @@ export default class UserService {
             throw err
         }
 
-        return userRecord
+        return userInstance
+    }
+
+    public async findUserByEmail(email: string): Promise<IUser> {
+        this.logger.silly('Finding user db record')
+        const repository = getRepository(this.UserModel)
+        let user: any
+
+        try {
+            user = await repository.findOne({ email })
+        } catch(e) {
+            const { detail } = e
+            let err = new Error(detail)
+            err.status = 404
+            throw err
+        }
+
+        if (!user) {
+            let err = new Error()
+            err.message = 'Record not found'
+            err.status = 404
+            throw err
+        }
+
+        return user
     }
 }

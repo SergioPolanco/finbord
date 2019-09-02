@@ -10,7 +10,7 @@ export default async ({ expressApp }) => {
         model: User,
     };
 
-    const connection = dbConnection()
+    const connection = await dbConnection()
     await dependencyInjectorLoader({
         dbConnection: connection,
         models: [
