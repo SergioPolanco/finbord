@@ -1,12 +1,16 @@
 {
   "name": "finbord-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Api for findbord app",
   "main": "src/app.ts",
   "scripts": {
     "tsc": "tsc",
     "start": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SergioPolanco/finbord"
   },
   "author": "Sergio Polanco",
   "license": "ISC",
@@ -34,6 +38,6 @@
     "eslint": "^6.2.2",
     "nodemon": "^1.19.1",
     "prettier": "1.18.2",
-    "typescript": "^3.6.2"
+    "typescript": "^3.5.3"
   }
 }

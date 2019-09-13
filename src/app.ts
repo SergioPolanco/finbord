@@ -13,7 +13,14 @@ async function startServer() {
      * Well, at least in node 10 without babel and at the time of writing
      * So we are using good old require.
      **/
-    await require('./loaders').default({ expressApp: app })
+
+    try {
+        await require('./loaders').default({ expressApp: app })
+    } catch(e) {
+        Logger.error(e)
+        return
+    }
+    
 
     app.listen(config.port, err => {
         if (err) {

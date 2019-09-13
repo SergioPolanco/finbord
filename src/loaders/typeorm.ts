@@ -5,10 +5,10 @@ const parentDir = join(__dirname, '..');
 
 const connectionOpts: ConnectionOptions = {
     type: "postgres",
-    host: "localhost",
+    host: "db",
     port: 5432,
-    username: "postgres",
-    password: "postgresroot*.",
+    username: "finbord",
+    password: "finbord",
     database: "finbord",
     synchronize: true,
     logging: false,
@@ -18,6 +18,10 @@ const connectionOpts: ConnectionOptions = {
 };
 
 export default async (): Promise<Connection> => {
-    const connection = await createConnection(connectionOpts)
-    return connection
+    try {
+        const connection = await createConnection(connectionOpts)
+        return connection
+    } catch(e) {
+        throw e
+    }    
 } 

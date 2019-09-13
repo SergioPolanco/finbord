@@ -1,0 +1,27 @@
+version: '3'
+services:
+  api:
+    build: .
+    depends_on:
+      - db
+    ports: 
+      - 3000:3000
+  db:
+    image: postgres:11
+    ports: 
+      - 5432:5432
+    environment:
+      POSTGRES_USER: finbord
+      POSTGRES_PASSWORD: finbord
+      POSTGRES_DB: finbord
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    ports: 
+      - 8080:80
+    environment:
+      LISTEN_PORT: 80
+      SERVER_NAME: localhost
+      PROXY_PASS: http://api:3000
+
