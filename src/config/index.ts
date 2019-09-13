@@ -68,5 +68,13 @@ export default {
         username: process.env.FINBORD_DB_USERNAME || 'admin',
         password: process.env.FINBORD_DB_PASSWORD || 'admin',
         name: process.env.FINBORD_DB_NAME || 'finbord'
+    },
+
+    /**
+     * Redis config
+     */
+    redis: {
+        host: process.env.FINBORD_REDIS_HOST || 'localhost',
+        port: parseInt(process.env.FINBORD_REDIS_PORT, 6379),
     }
 };

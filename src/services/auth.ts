@@ -4,7 +4,9 @@ import argon2 from 'argon2'
 
 import config from '../config'
 import UserService from './user'
+import SessionService from './session'
 import { IUser, IUserInputDTO } from '../interfaces/IUser'
+
 
 @Service()
 export default class AuthService {
@@ -37,6 +39,7 @@ export default class AuthService {
 
     public async signIn(email: string, password: string): Promise<{ user: IUser; token: string }> {
         const userServiceInstance = Container.get(UserService)
+        const sessionServiceInstance = Container.get(SessionService)
         let user: IUser
 
         try {
@@ -54,10 +57,12 @@ export default class AuthService {
             err.status = 401
             throw err
         }
-
         this.logger.silly('Password is valid!')
+
         this.logger.silly('Generating JWT')
         const token = this.generateToken(user)
+
+        sessionServiceInstance.save(token, user._id)
 
         Reflect.deleteProperty(user, 'password')
         Reflect.deleteProperty(user, 'salt')
