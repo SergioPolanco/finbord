@@ -5,7 +5,7 @@ import { randomBytes } from 'crypto'
 import slugify from 'slugify'
 
 import { IUser, IUserInputDTO } from '../interfaces/IUser'
-
+import { RecordNotFound } from '../exceptions/models'
 @Service() 
 export default class UserService {
     constructor(
@@ -63,9 +63,7 @@ export default class UserService {
         }
 
         if (!user) {
-            let err = new Error()
-            err.message = 'Record not found'
-            err.status = 404
+            const err = new RecordNotFound(`User with email ${email} doesn't exists`)
             throw err
         }
 

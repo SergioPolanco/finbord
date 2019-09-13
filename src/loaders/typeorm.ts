@@ -1,15 +1,17 @@
 import "reflect-metadata"
 import { join } from 'path'
 import { createConnection, Connection, ConnectionOptions } from "typeorm"
+import config from '../config'
 const parentDir = join(__dirname, '..');
 
+const { database} = config
 const connectionOpts: ConnectionOptions = {
     type: "postgres",
-    host: "db",
-    port: 5432,
-    username: "finbord",
-    password: "finbord",
-    database: "finbord",
+    host: database.host,
+    port: database.port,
+    username: database.username,
+    password: database.password,
+    database: database.name,
     synchronize: true,
     logging: false,
     entities: [

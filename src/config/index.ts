@@ -56,7 +56,17 @@ export default {
      * Mailgun email credentials
      */
     emails: {
-        apiKey: 'API key from mailgun',
-        domain: 'Domain Name from mailgun'
+        sendgridKey: 'Sendgrid key'
+    },
+
+    /**
+     * Database config
+     */
+    database: {
+        host: process.env.FINBORD_DB_HOST || 'localhost',
+        port: parseInt(process.env.FINBORD_DB_PORT, 5432),
+        username: process.env.FINBORD_DB_USERNAME || 'admin',
+        password: process.env.FINBORD_DB_PASSWORD || 'admin',
+        name: process.env.FINBORD_DB_NAME || 'finbord'
     }
 };
